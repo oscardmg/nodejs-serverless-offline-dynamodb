@@ -1,37 +1,39 @@
-import dynamoDBClient from './dynamodb';
+const Dymano = require('./dynamodb');
+const Responses = require('./responses');
 
-export async function createUser(event) {
+const tableName = process.env.USERS_TABLE;
+
+module.exports.createUser = async function createUser (event) {
   try {
     const { email } = JSON.parse(event.body);
-    const params = { 
-      Item: { email }, 
-      TableName: process.env.USERS_TABLE 
-    };
 
-    await dynamoDBClient.put(params).promise();
 
-    return { success: true };
+    await Dymano.write({ email }, tableName);
+
+
+    return Responses._200({ success: true });
   } catch (err) {
     console.error(err);
+    return Responses._400({ success: false, error: err });
   }
 }
 
-export async function getUser(event) {
+module.exports.getUser = async function getUser (event) {
+  let result = {
+    success: false,
+    user: null
+  };
   try {
-    const params = { 
-      TableName: process.env.USERS_TABLE, 
-      Key: { email: event.queryStringParameters.email }
-    };
 
-    const user = await dynamoDBClient.get(params).promise();
+    const user = await Dymano.get(event.queryStringParameters.email, tableName);
 
-    if (user.hasOwnProperty('Item')) {
-      return { success: true, data: user }
-    } else {
-      return { success: false };
-    }
+    result.success = true;
+    result.user = user;
 
+    return Responses._200(result);
   } catch (err) {
     console.error(err);
+    result.error = err.message;
+    return Responses._400(result);
   }
 }

@@ -1,0 +1,10 @@
+POST http://localhost:3000/dev/user
+
+{
+  "email": "oscar@prueba1.com"
+}
+
+###
+GET http://localhost:3000/dev/user?email=oscar@prueba1.com
+
+

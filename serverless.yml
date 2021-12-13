@@ -1,5 +1,5 @@
 service: serverless-offline-dynamodb
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 custom:
   dynamodb:
@@ -8,14 +8,12 @@ custom:
     start:
       port: 8000
       inMemory: true
-      heapInitial: 200m
-      heapMax: 1g
       migrate: true
-      seed: true
-      convertEmptyValues: true
+    migration:
+      dir: offline/migrations
   webpack:
-    webpackConfig: './webpack.config.js'
-    packager: 'npm'
+    webpackConfig: "./webpack.config.js"
+    packager: "npm"
     includeModules:
       forceExclude:
         - aws-sdk
@@ -28,13 +26,19 @@ plugins:
 
 provider:
   name: aws
-  region: ${opt:region, 'ap-northeast-2'}
+  region: ${opt:region, 'us-east-1'}
   runtime: nodejs12.x
   memorySize: 512
-  role: LambdaRole
   versionFunctions: false
   deploymentBucket:
     blockPublicAccess: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+        - s3:*
+        - ses:*
+      Resource: "*"
 
 package:
   individually: true
@@ -58,4 +62,3 @@ functions:
 
 resources:
   - Resources: ${file(./config/dynamoDB.yaml)}
-  - Resources: ${file(./config/lambdaRoles.yaml)}

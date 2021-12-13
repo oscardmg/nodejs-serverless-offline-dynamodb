@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-serverless-offline-dynamodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dynamodb.js",
+  "scripts": {
+    "dynamodb:install": "sls dynamodb install",
+    "offline": "sls offline start --location .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oscardmg/nodejs-serverless-offline-dynamodb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oscardmg/nodejs-serverless-offline-dynamodb/issues"
+  },
+  "homepage": "https://github.com/oscardmg/nodejs-serverless-offline-dynamodb#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.4",
+    "babel-loader": "^8.2.3",
+    "serverless-dotenv-plugin": "^3.10.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^8.3.1",
+    "serverless-webpack": "^5.6.0",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
